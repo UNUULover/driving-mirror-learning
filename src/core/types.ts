@@ -1,0 +1,13 @@
+export type Vec3 = { x: number; y: number; z: number };
+export interface SeatAdjust { foreAft: number; height: number; backrestAngle: number; }
+/** Vehicle placement in the world frame. position is the body origin in world coordinates; yaw is a left-positive heading in degrees (§0). */
+export interface VehiclePose { position: Vec3; yaw: number; }
+export interface ViewpointState { source: 'standard' | 'photo' | 'manual'; eyePosition: Vec3; headPose: { pitch: number; yaw: number; roll: number }; confidence: { position: number; pose: number }; baseline: { percentile: number; seatAdjust: SeatAdjust }; delta: { fromPhoto: Vec3; fromManual: Vec3 }; }
+export interface MirrorState { id: 'inner' | 'left' | 'right'; radiusOfCurvature: number; asphericZone: { startU: number; radiusMm: number } | null; tilt: { yaw: number; pitch: number }; mountPoint: Vec3; halfWidth: number; halfHeight: number; reflectanceDay: number; reflectanceNight: number; dimmingEnabled: boolean; }
+export type ProxyPrimitive = { kind: 'plane'; point: Vec3; normal: Vec3; label: string; color?: [number, number, number] } | { kind: 'aabb'; min: Vec3; max: Vec3; label: string; color?: [number, number, number] };
+export interface ProxyHit { hit: boolean; t: number; point: Vec3; normal: Vec3; label: string; primitiveIndex: number; }
+export interface ReferenceAnchor { id: string; kind: 'wiperNode' | 'hoodEdge' | 'mirrorLowerEdge' | 'pillarA' | 'doorHandle' | 'rearWindowCorner' | 'custom'; part: string; localPosition: Vec3; projection: 'point' | 'line' | 'plane'; groundMarking: string | null; }
+export type WeatherPresetId = 'noon' | 'dusk_backlight' | 'night_highbeam' | 'rain' | 'fog' | 'tunnel';
+export interface WeatherState { preset: WeatherPresetId; sunElevationDeg: number; sunAzimuthDeg: number; sunIntensity: number; skyIbl: string | null; rainIntensity: number; fogDensity: number; roadWetness: number; exposure: number; glareSources: Array<{ position: Vec3; intensity: number; color: [number, number, number] }>; }
+export interface VehicleSpec { id: string; name: string; wheelbase: number; trackWidth: number; overallLength: number; overallWidth: number; overallHeight: number; sgRPBase: Vec3; seatTravelRange: { foreAft: [number, number]; height: [number, number] }; hoodFrontEdgeHeight: number; pillarAAngleDeg: number; mirrorMounts: Record<MirrorState['id'], MirrorState>; partOrigins?: Record<string, Vec3>; anchors: ReferenceAnchor[]; }
+export interface FieldSpec { id: string; name: string; items: Array<{ type: 'reverse_parking' | 'parallel_parking' | 's_curve' | 'right_angle_turn' | 'slope_start'; origin: Vec3; headingDeg: number; params: Record<string, number>; }>; }

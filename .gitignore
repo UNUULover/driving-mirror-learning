@@ -1,0 +1,16 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+outputs/
+*.tsbuildinfo
+
+# local tooling cache
+work/npm-cache/
+
+# editor / OS
+.DS_Store
+.idea/
+.vscode/
+*.log

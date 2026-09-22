@@ -1,0 +1,4 @@
+import { describe, expect, it } from 'vitest';
+import { mirrorNormalAt, reflectDirection, sampleMirrorSurface, sphereCenterFromMirror } from '../../src/core/mirror';
+import { defaultVehicle } from '../../src/core/vehicle';
+describe('mirror geometry',()=>{const mirror=defaultVehicle.mirrorMounts.left;it('uses null only for an explicit planar radius',()=>expect(sphereCenterFromMirror(defaultVehicle.mirrorMounts.inner)).toBeNull());it('samples a true sphere',()=>{const c=sphereCenterFromMirror(mirror)!;const p=sampleMirrorSurface(mirror,1,0);expect(Math.hypot(p.x-c.x,p.y-c.y,p.z-c.z)).toBeCloseTo(mirror.radiusOfCurvature/1000,7)});it('reflects an incident direction about an analytic normal',()=>{const p=mirror.mountPoint,n=mirrorNormalAt(mirror,p),r=reflectDirection({x:p.x-1,y:p.y,z:p.z},p,n);expect(r.x).toBeLessThan(0)});});

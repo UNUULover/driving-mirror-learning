@@ -1,0 +1,3 @@
+/** Paraxial-only reference solution; it is not an absolute oracle for large targets. */
+/** A plane mirror is unit magnification by definition: its virtual image sits as far behind as the object sits in front, so -v/u would be the 0/0 limit for an object at infinity and is taken directly instead. */
+export const paraxialConvex = (objectDistance: number, radiusM: number, objectHeight: number, eyeToMirror: number) => { const u=Math.max(1e-12,objectDistance); const planar=!Number.isFinite(radiusM); const v=planar?-u:1/(-2/radiusM-1/u); const magnification=planar?1:-v/u; const imageHeight=magnification*objectHeight; const eyeToImage=eyeToMirror+Math.abs(v); return { imageDistance:v, magnification, imageHeight, eyeToImage, angularSizeRad:imageHeight/eyeToImage }; };

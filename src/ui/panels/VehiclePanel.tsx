@@ -1,0 +1,2 @@
+import { useAppStore } from '../../state/store';
+export function VehiclePanel(){const p=useAppStore(s=>s.percentile),seat=useAppStore(s=>s.seat),setP=useAppStore(s=>s.setPercentile),setSeat=useAppStore(s=>s.setSeat);return <fieldset><legend>驾驶员与座椅</legend><label>身高百分位 <input type="range" min="5" max="95" value={p} onChange={e=>setP(Number(e.target.value))}/>{p}</label><label>后移 <input type="range" min="-.15" max=".25" step=".01" value={seat.foreAft} onChange={e=>setSeat({foreAft:Number(e.target.value)})}/></label></fieldset>}

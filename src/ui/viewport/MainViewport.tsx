@@ -1,0 +1,5 @@
+import { useEffect, useRef } from 'react';
+import { createSafeViewport } from '../../render/viewport';
+import { useAppStore } from '../../state/store';
+import { defaultWeather } from '../../state/config';
+export function MainViewport(){const canvas=useRef<HTMLCanvasElement>(null);const mirrors=useAppStore(s=>s.mirrors);const eye=useAppStore(s=>s.viewpoint.eyePosition);const pose=useAppStore(s=>s.viewpoint.headPose);const weather=useAppStore(s=>s.weather)??defaultWeather;const blind=useAppStore(s=>s.blindSpot);const target=useAppStore(s=>s.targetPosition)??{x:-5,z:-4.4};const exposureMode=useAppStore(s=>s.exposureMode);const view=useRef<ReturnType<typeof createSafeViewport>|null>(null);useEffect(()=>{if(!canvas.current)return;view.current=createSafeViewport(canvas.current,mirrors,eye,weather,blind,target,pose,exposureMode);return()=>view.current?.dispose()},[mirrors,weather,blind,target,exposureMode]);useEffect(()=>view.current?.updateEye(eye,pose),[eye,pose]);return <canvas style={{width:'100%',height:360,display:'block',borderRadius:8}} ref={canvas}/>}
